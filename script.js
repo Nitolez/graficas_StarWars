@@ -10,14 +10,14 @@ const personajes = []
 const arrayPersonajesPelis = []
 const cantidadPelis = []
 
-const getFromApi1 = async() => {
-  try{
-    
+const getFromApi1 = async () => {
+  try {
+
     const respuesta = await fetch(api1)
     const dato = await respuesta.json()
     const arrayPeliculas = dato.results
     return arrayPeliculas
-  } catch (error){
+  } catch (error) {
     console.log("Error")
   }
 
@@ -28,7 +28,7 @@ getFromApi1()
       const titulo = element.title
       const anioPubli = element.release_date
       const stringAnio = new Date(anioPubli)
-      const soloAnio =  stringAnio.getFullYear()
+      const soloAnio = stringAnio.getFullYear()
       peliculas.push(titulo)
       anios.push(soloAnio)
     });
@@ -40,7 +40,7 @@ getFromApi1()
     }, {
       high: anios[5],
       low: anios[0],
-      fullWidth: true,chartPadding: {
+      fullWidth: true, chartPadding: {
         right: 40
       },
       // As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
@@ -54,15 +54,15 @@ getFromApi1()
 
 //EJERCICIO 2
 
-const getFromApi2 = async() => {
-  try{
-    
+const getFromApi2 = async () => {
+  try {
+
     const respuesta = await fetch(api2)
     const dato = await respuesta.json()
     const arrayPersonajes = dato.results
     return arrayPersonajes
-    
-  } catch (error){
+
+  } catch (error) {
     console.log("Error")
   }
 
@@ -74,24 +74,35 @@ getFromApi2()
       const films = element.films
       personajes.push(names)
       arrayPersonajesPelis.push(films.length)
-    console.log(arrayPersonajesPelis)
+      console.log(arrayPersonajesPelis)
     });
-    new Chartist.Line('#chart2', {
+    var data = {
       labels: personajes,
       series: [
         arrayPersonajesPelis
       ]
-    }, {
-      high: 10,
-      low: 0,
-      fullWidth: true,chartPadding: {
-        right: 40
-      },
-      // As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
-      axisY: {
-        onlyInteger: true,
-        offset: 20
-      }
-    });
+    };
+
+    var options = {
+      seriesBarDistance: 10
+    };
+
+    var responsiveOptions = [
+      ['screen and (max-width: 640px)', {
+        seriesBarDistance: 5,
+        axisX: {
+          labelInterpolationFnc: function (value) {
+            return value[0];
+          },
+          axisY: {
+            onlyInteger: true,
+            offset: 20
+          }
+        }
+      }]
+    ];
+
+    new Chartist.Bar('#chart2', data, options, responsiveOptions);
+    
   })
 
