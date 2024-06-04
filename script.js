@@ -41,7 +41,10 @@ getFromApi1()
       high: anios[5],
       low: anios[0],
       fullWidth: true, chartPadding: {
-        right: 40
+        right: 100,
+        left: 100,
+        top: 20,
+        bottom: 20
       },
       // As this is axis specific we need to tell Chartist to use whole numbers only on the concerned axis
       axisY: {
